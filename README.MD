@@ -1,2 +1,2 @@
-django-blog
+django-blog: 
 My first training project
