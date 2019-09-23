@@ -1,0 +1,16 @@
+{% extends 'blogengine/base.html'%}
+
+{%block title%}
+    Delete Tag {{ tag.title}}
+{% endblock %}
+
+
+{%block content%}
+
+    <form method="post">
+        {% csrf_token %}
+        <p>Вы уверены что хотите удалить тэг "{{ tag.title }}"?</p>
+        <a href="{{tag.get_absolute_url}}" class="btn btn-secondary">Отменить</a>
+       <button type="button" class="btn btn-danger" type="submit">Удалить</button>
+    </form>
+{%endblock%}

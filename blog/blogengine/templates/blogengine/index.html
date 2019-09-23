@@ -1,0 +1,12 @@
+{% extends 'blogengine/base.html'%}
+
+{%block title%}
+    Post list
+{% endblock %}
+
+{%block content%}
+    <div class="mb-5"><h1>Посты</h1></div>
+    {%for post in posts%}
+        {%include 'blogengine/includes/post_card.html' %}
+    {% endfor %}
+{% endblock %}

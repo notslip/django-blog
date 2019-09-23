@@ -1,0 +1,27 @@
+{% extends 'blogengine/base.html'%}
+
+{%block title%}
+    Create Post
+{% endblock %}
+
+
+{%block content%}
+<form action="{%url 'post_create_url'%}" method="post">
+    {%csrf_token%}
+
+    {%for field in form%}
+        <div>
+            {{field.label}}
+            <p>{{field}}</p>
+            {% if field.errors%}
+            <div class="alert alert-danger">{{field.errors}}</div>
+            {%endif%}
+        </div>
+    {%endfor%}
+
+    <button class="btn btn-success" type="submit">Создать</button>
+    <a class="btn btn-secondary" href="{% url 'posts_list_url'%}" type="button">Отменить</a>
+
+</form>
+
+{%endblock%}

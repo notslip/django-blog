@@ -1,0 +1,19 @@
+{%extends 'blogengine/index.html'%}
+
+
+{%block title%}
+    {{tag.title|title}}
+{%endblock%}
+
+
+{%block content%}
+    <h1>Посты с тегом {{tag.title}}:</h1>
+    {%for post in tag.posts.all%}
+       {%include 'blogengine/includes/post_card.html' %}
+    {%endfor%}
+    <div class="card-footer text-muted">
+            <a class="btn btn-secondary mt-2 " href="{%url 'tags_list_url' %}" role="button">Назад</a>
+            <a class="btn btn-danger mt-2 " href="{%url 'tag_delete_url' slug=tag.slug %}" role="button">Удалить</a>
+            <a class="btn btn-warning mt-2 " href="{%url 'tag_update_url' slug=tag.slug %}" role="button">Изменить</a>
+    </div>
+{%endblock%}

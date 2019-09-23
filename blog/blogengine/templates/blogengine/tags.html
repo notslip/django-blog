@@ -1,0 +1,23 @@
+{%extends 'blogengine/base.html'%}
+
+{%block title%}
+    Tags list
+{%endblock%}
+
+{%block content%}
+    <div class="mb-5"><h1>Теги</h1></div>
+        {%for tag in tags%}
+            <div class="card mb-4">
+
+                    <h5 class="card-title m-2"><a href="{{tag.get_absolute_url}}"> {{tag.title}}</a></h5>
+                    <div class="card-footer text-muted">
+                        <small>
+                            {%for post in tag.posts.all%}
+                                <a href="{{post.get_absolute_url}}">{{post.title|title}} </a>
+                            {%endfor%}
+                        </small>
+                    </div>
+
+            </div>
+        {% endfor %}
+{%endblock%}
