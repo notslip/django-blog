@@ -1,5 +1,6 @@
 from django.db import models
 from django.shortcuts import reverse
+from user_profile.models import UserProfile
 
 
 
@@ -10,6 +11,7 @@ class Post(models.Model):
     body = models.TextField(db_index=True, blank=True)
     pub_date = models.DateTimeField(auto_now_add=True)
     tags = models.ManyToManyField('Tag', related_name='posts', blank=True)
+    author = models.ForeignKey(UserProfile, related_name='posts', on_delete=models.CASCADE, null=True)
 
     def get_absolute_url(self):
         return reverse('post_detail_url', kwargs={'slug': self.slug})
