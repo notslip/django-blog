@@ -1,0 +1,14 @@
+{%extends 'main_base.html'%}
+
+{% block title%}
+    {{userprofile.user}}
+{%endblock%}}
+
+{%block content%}
+         <p>{{userprofile.user}}</p>
+         <p>{{userprofile.bio}}</p>
+         <p> Posts: {%for post in userprofile.get_post%}
+                    <p>{{post}}</p>
+                    {%endfor%}
+         </p>
+{%endblock%}
