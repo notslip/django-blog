@@ -5,7 +5,11 @@
 {%endblock%}}
 
 {%block content%}
+        <img src="{{userprofile.avatar}}">{{userprofile.avatar}}<img>
          <p>{{userprofile.user}}</p>
+         <p>{{userprofile.user.first_name}}</p>
+         <p>{{userprofile.user.last_name}}</p>
+         <p>{{userprofile.user.email}}</p>
          <p>{{userprofile.bio}}</p>
          <p> Posts: {%for post in userprofile.get_post%}
                     <p>{{post}}</p>

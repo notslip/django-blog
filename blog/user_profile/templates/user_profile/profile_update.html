@@ -1,0 +1,19 @@
+{%extends 'main_base.html'%}
+
+{%block title%}
+    Update profile
+{% endblock %}
+
+
+{%block content%}
+<form action="{%url 'profile_update_url' %}" method="post">
+    {%csrf_token%}
+
+    {{ user_form.as_p }}
+    {{ profile_form.as_p }}
+
+    <button class="btn btn-warning" type="submit">Изменить</button>
+    <a class="btn btn-secondary" href="{%url 'profile_detail_url' %}">Отменить</a>
+</form>
+
+{%endblock%}
