@@ -25,17 +25,26 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{%url 'tags_list_url'%}">Тэги </a>
                 </li>
+                {%if request.user.is_authenticated %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Создать:
+                    </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="{%url 'post_create_url'%}">Пост</a>
                         <a class="dropdown-item" href="{%url 'tag_create_url'%}">Тэг</a>
                     </div>
                 </li>
+                {%endif%}
             </ul>
         </div>
-        {%if request.user.is_authenticated %}<div class="mx-5 text-white"><a class="text-white" href="{%url 'profile_detail_url' %}">{{request.user}}</a></div>{%endif%}
+        {%if request.user.is_authenticated %}
+            <div class="mx-1 "><a class="text-white" href="{%url 'profile_detail_url' %}">{{request.user}}</a></div>
+            <div class="mx-4 "><a class="text-white-50" href="{%url 'logout' %}">Выйти</a></div>
+        {% else %}
+            <div class="mx-4 "><a class="text-white" href="{%url 'registration' %}">Зарегестрироваться</a></div>
+            <div class="mx-4 "><a class="text-white" href="{%url 'login' %}">Войти</a></div>
+        {%endif%}
         <form class="form-inline">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
