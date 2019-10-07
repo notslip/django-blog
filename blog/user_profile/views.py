@@ -1,9 +1,8 @@
-from django.shortcuts import render, get_object_or_404,redirect
-
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, FormView, View
-from django.urls import reverse_lazy
+from django.shortcuts import render, redirect
+from django.views.generic import  DetailView, UpdateView
 from .models import UserProfile
 from .forms import UserForm, ProfileForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class ProfileView(DetailView):
@@ -15,7 +14,7 @@ class ProfileView(DetailView):
         return render(request, template_name='user_profile/profile.html', context={'userprofile': userprofile})
 
 
-class ProfileUpdate(UpdateView):
+class ProfileUpdate(LoginRequiredMixin, UpdateView):
 
     def post(self, request):
         user_form = UserForm(request.POST, instance=request.user)

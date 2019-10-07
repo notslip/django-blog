@@ -42,7 +42,7 @@
             <div class="mx-1 "><a class="text-white" href="{%url 'profile_detail_url' %}">{{request.user}}</a></div>
             <div class="mx-4 "><a class="text-white-50" href="{%url 'logout' %}">Выйти</a></div>
         {% else %}
-            <div class="mx-4 "><a class="text-white" href="{%url 'registration' %}">Зарегестрироваться</a></div>
+            <div class="mx-4 "><a class="text-white" href="{%url 'registration' %}">Зарегистрироваться</a></div>
             <div class="mx-4 "><a class="text-white" href="{%url 'login' %}">Войти</a></div>
         {%endif%}
         <form class="form-inline">

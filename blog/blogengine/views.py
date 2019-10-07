@@ -1,10 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse
 from django.urls import reverse_lazy
 from .models import Post, Tag
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, FormView, View
-from .forms import  TagForm
-from django.contrib.auth.models import User
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
+from .forms import TagForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 #CRUD Post
 
@@ -43,13 +44,13 @@ class PostDetailView(DetailView):
         return context
 
 
-class PostCreate(CreateView):
+class PostCreate(LoginRequiredMixin, CreateView):
     model = Post
     fields = ['title', 'slug', 'body', 'tags']
     template_name = 'blogengine/post_create.html'
 
 
-class PostUpdate(UpdateView):
+class PostUpdate(LoginRequiredMixin, UpdateView):
     model = Post
     fields = ['title', 'slug', 'body', 'tags']
     template_name = 'blogengine/post_update.html'
@@ -64,7 +65,7 @@ class PostUpdate(UpdateView):
     #     return Post.objects.get(slug=self.request.GET('slug'))
 
 
-class PostDelete(DeleteView):
+class PostDelete(LoginRequiredMixin, DeleteView):
     model = Post
     template_name_suffix = '_delete'
 
@@ -100,13 +101,13 @@ class TagDetailView(DetailView):
         return context
 
 
-class TagCreate(CreateView):
+class TagCreate(LoginRequiredMixin, CreateView):
     model = Tag
     fields = ['title', 'slug']
     template_name = 'blogengine/tag_create.html'
 
 
-class TagUpdate(View):
+class TagUpdate(LoginRequiredMixin, View):
     def get(self, request, slug):
         tag = Tag.objects.get(slug__iexact=slug)
         form = TagForm(instance=tag)
@@ -122,8 +123,8 @@ class TagUpdate(View):
         else:
             return render(request, 'blogengine/tag_update.html', context={'form': form, 'tag': tag})
 
-
-def tagDelete(request, slug):
+@login_required()
+def tagDelete( request, slug):
     tag = Tag.objects.get(slug__iexact=slug)
     if request.method == 'GET':
         return render(request,'blogengine/tag_delete.html', context={'tag': tag})
