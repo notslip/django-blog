@@ -12,7 +12,7 @@
          <p>{{userprofile.user.email}}</p>
          <p>{{userprofile.bio}}</p>
          <p> Posts: {%for post in userprofile.get_post%}
-                    <p>{{post}}</p>
+            <p><a href="{{post.get_absolute_url}}"> {{post.title|title}}</a></p>
                     {%endfor%}
          </p>
 {%endblock%}

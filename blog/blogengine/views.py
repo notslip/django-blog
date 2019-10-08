@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from .models import Post, Tag
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
-from .forms import TagForm
+from .forms import TagForm, PostCreateForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -44,10 +44,24 @@ class PostDetailView(DetailView):
         return context
 
 
-class PostCreate(LoginRequiredMixin, CreateView):
-    model = Post
-    fields = ['title', 'slug', 'body', 'tags']
-    template_name = 'blogengine/post_create.html'
+class PostCreate(LoginRequiredMixin, View):
+
+    def get(self, request):
+        form = PostCreateForm()
+        return render(request, template_name='blogengine/post_create.html', context={'form': form})
+
+    def post(self,request):
+        form = PostCreateForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user.userprofile
+            post.save()
+            return redirect(post)
+        else:
+            return render(request, 'blogengine/post_create.html', context={'form': form})
+
+
+
 
 
 class PostUpdate(LoginRequiredMixin, UpdateView):
@@ -113,7 +127,7 @@ class TagUpdate(LoginRequiredMixin, View):
         form = TagForm(instance=tag)
         return render(request, 'blogengine/tag_update.html', context={'form': form, 'tag': tag})
 
-    def post(self,request, slug):
+    def post(self, request, slug):
         tag = Tag.objects.get(slug__iexact=slug)
         form = TagForm(request.POST, instance=tag)
 

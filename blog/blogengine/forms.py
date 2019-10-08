@@ -22,9 +22,16 @@ from .models import Post, Tag
 #         fields = ['title', 'slug', 'body', 'tags']
 
 
-
 class TagForm(forms.ModelForm):
-
     class Meta:
         model = Tag
         fields = ['title', 'slug']
+
+
+class PostCreateForm(forms.ModelForm):
+      class Meta:
+          model = Post
+          fields = ['title', 'slug', 'body', 'tags', 'author']
+          widgets = {
+              'author': forms.HiddenInput()
+          }
