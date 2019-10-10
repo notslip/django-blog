@@ -2,9 +2,10 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from .models import Post, Tag
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
-from .forms import TagForm, PostCreateForm
+from .forms import PostCreateForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from  django.core.exceptions import PermissionDenied
 
 
 #CRUD Post
@@ -50,7 +51,7 @@ class PostCreate(LoginRequiredMixin, View):
         form = PostCreateForm()
         return render(request, template_name='blogengine/post_create.html', context={'form': form})
 
-    def post(self,request):
+    def post(self, request):
         form = PostCreateForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
@@ -61,43 +62,33 @@ class PostCreate(LoginRequiredMixin, View):
             return render(request, 'blogengine/post_create.html', context={'form': form})
 
 
-
-
-
 class PostUpdate(LoginRequiredMixin, UpdateView):
     model = Post
     fields = ['title', 'slug', 'body', 'tags']
     template_name = 'blogengine/post_update.html'
     context_object_name = 'post'
 
-    # def get_context_data(self, **kwargs):
-    #     context = super(PostUpdate, self).get_context_data(**kwargs)
-    #     context['post'] = get_object_or_404(Post, slug=self.kwargs['slug'])
-    #     return context
-
-    # def get_object_or_404(self):
-    #     return Post.objects.get(slug=self.request.GET('slug'))
-
+    def get_object(self, queryset=None):
+        obj = self.model.objects.get(slug=self.kwargs['slug'])
+        if obj.is_author( self.request):
+            return obj
+        else:
+            raise PermissionDenied('У вас нет прав на изменение этого поста!')
 
 class PostDelete(LoginRequiredMixin, DeleteView):
     model = Post
     template_name_suffix = '_delete'
-
     success_url = reverse_lazy('posts_list_url')
 
-
-
+    def get_object(self, queryset=None):
+        obj = self.model.objects.get(slug=self.kwargs['slug'])
+        if obj.is_author(self.request):
+            return obj
+        else:
+            raise PermissionDenied('У вас нет прав на удаление этого поста!')
 
 
 #CRUD Tag
-
-# def tags_list(request):
-#     tags = Tag.objects.all()
-#     return render(request, 'blogengine/tags.html', context={'tags': tags})
-
-# def tag_detail(request, slug):
-#     tag = Tag.objects.get(slug__iexact=slug)
-#     return render(request, 'blogengine/tag.html', context={'tag': tag})
 
 class TagList(ListView):
     model = Tag
@@ -121,30 +112,31 @@ class TagCreate(LoginRequiredMixin, CreateView):
     template_name = 'blogengine/tag_create.html'
 
 
-class TagUpdate(LoginRequiredMixin, View):
-    def get(self, request, slug):
-        tag = Tag.objects.get(slug__iexact=slug)
-        form = TagForm(instance=tag)
-        return render(request, 'blogengine/tag_update.html', context={'form': form, 'tag': tag})
+class TagUpdate(LoginRequiredMixin, UpdateView):
+    model = Tag
+    fields = ['title', 'slug']
+    template_name = 'blogengine/tag_update.html'
 
-    def post(self, request, slug):
-        tag = Tag.objects.get(slug__iexact=slug)
-        form = TagForm(request.POST, instance=tag)
-
-        if form.is_valid():
-            form.save()
-            return redirect(tag)
+    def get_object(self, queryset=None):
+        obj = self.model.objects.get(slug=self.kwargs['slug'])
+        if self.request.user.is_superuser:
+            return obj
         else:
-            return render(request, 'blogengine/tag_update.html', context={'form': form, 'tag': tag})
+            raise PermissionDenied('У вас нет прав на изменение этого тега!')
+
 
 @login_required()
-def tagDelete( request, slug):
-    tag = Tag.objects.get(slug__iexact=slug)
-    if request.method == 'GET':
-        return render(request,'blogengine/tag_delete.html', context={'tag': tag})
+def tagDelete(request, slug):
+    if request.user.is_superuser:
+        tag = Tag.objects.get(slug__iexact=slug)
+        if request.method == 'GET':
+            return render(request, 'blogengine/tag_delete.html', context={'tag': tag})
+        else:
+            tag.delete()
+            return redirect(reverse_lazy('tags_list_url'))
     else:
-        tag.delete()
-        return redirect(reverse_lazy('tags_list_url'))
+        raise PermissionDenied('У вас нет прав на изменение этого тега!')
+
 
 
 

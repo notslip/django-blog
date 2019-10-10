@@ -13,7 +13,9 @@
     {%endfor%}
     <div class="card-footer text-muted">
             <a class="btn btn-secondary mt-2 " href="{%url 'tags_list_url' %}" role="button">Назад</a>
-            <a class="btn btn-danger mt-2 " href="{%url 'tag_delete_url' slug=tag.slug %}" role="button">Удалить</a>
-            <a class="btn btn-warning mt-2 " href="{%url 'tag_update_url' slug=tag.slug %}" role="button">Изменить</a>
+            {%if request.user.is_superuser %}
+                <a class="btn btn-danger mt-2 " href="{%url 'tag_delete_url' slug=tag.slug %}" role="button">Удалить</a>
+                <a class="btn btn-warning mt-2 " href="{%url 'tag_update_url' slug=tag.slug %}" role="button">Изменить</a>
+            {%endif%}
     </div>
 {%endblock%}

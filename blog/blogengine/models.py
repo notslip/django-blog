@@ -19,6 +19,12 @@ class Post(models.Model):
     def __str__(self):
         return '{}'.format(self.title)
 
+    def is_author(self, request):
+        if self.author == request.user.userprofile:
+            return True
+        else:
+            return False
+
 
 class Tag(models.Model):
     title = models.CharField(max_length=50)

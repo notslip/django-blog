@@ -8,8 +8,10 @@
          {%include 'blogengine/includes/post_card.html' %}
             <div class="mt-4">
                 <a class="btn btn-secondary  " href="{%url 'posts_list_url' %}" role="button">Назад</a>
-                <a class="btn btn-danger  " href="{%url 'post_delete_url' slug=post.slug %}" role="button">Удалить</a>
-                <a class="btn btn-warning  " href="{%url 'post_update_url' slug=post.slug %}" role="button">Изменить</a>
+                {% if request.user == post.author.user %}
+                    <a class="btn btn-danger  " href="{%url 'post_delete_url' slug=post.slug %}" role="button">Удалить</a>
+                    <a class="btn btn-warning  " href="{%url 'post_update_url' slug=post.slug %}" role="button">Изменить</a>
+                {%endif%}
             </div>
         </div>
 {%endblock%}
