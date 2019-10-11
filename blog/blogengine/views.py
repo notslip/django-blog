@@ -6,6 +6,7 @@ from .forms import PostCreateForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from  django.core.exceptions import PermissionDenied
+from django.core.paginator import Paginator
 
 
 #CRUD Post
@@ -34,15 +35,26 @@ class PostsView(ListView):
     template_name = 'blogengine/index.html'
     context_object_name = 'posts'
 
+    def get_queryset(self):
+        obj = self.model.objects.all()
+        paginator = Paginator(obj, 2)
+        page = self.request.GET.get('page')
+        if page is None:
+            page = 1
+        posts = paginator.get_page(page)
+        return posts
+
+
+
 
 class PostDetailView(DetailView):
     model = Post
     template_name = 'blogengine/post.html'
 
-    def get_context_data(self, **kwargs):
-        context = super(PostDetailView, self).get_context_data(**kwargs)
-        context['post'] = get_object_or_404(Post, slug=self.kwargs['slug'])
-        return context
+    # def get_context_data(self, **kwargs):
+    #     context = super(PostDetailView, self).get_context_data(**kwargs)
+    #     context['post'] = get_object_or_404(Post, slug=self.kwargs['slug'])
+    #     return context
 
 
 class PostCreate(LoginRequiredMixin, View):
@@ -135,7 +147,7 @@ def tagDelete(request, slug):
             tag.delete()
             return redirect(reverse_lazy('tags_list_url'))
     else:
-        raise PermissionDenied('У вас нет прав на изменение этого тега!')
+        raise PermissionDenied('У вас нет прав на удаление этого тега!')
 
 
 

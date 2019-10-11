@@ -5,8 +5,40 @@
 {% endblock %}
 
 {%block content%}
-    <div class="mb-5"><h1>Посты</h1></div>
+    <div class="mb-4"><h1>Посты</h1></div>
     {%for post in posts%}
         {%include 'blogengine/includes/post_card.html' %}
     {% endfor %}
+
+    <div>
+    <ul class="pagination">
+        {% if posts.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{ posts.previous_page_number }}"> < Туда</a></li>
+        <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+        {% endif %}
+
+        {% if posts.has_previous and posts.previous_page_number != 1  %}
+        <li class="mx-2 mb-0">. . .</li>
+        <li class="page-item"><a class="page-link" href="?page={{posts.previous_page_number}}">{{posts.previous_page_number}}</a></li>
+        {% endif %}
+        <li class="page-item active">
+            <a class="page-link" href="#">
+            {{ posts.number }}
+            </a>
+        </li>
+        {% if posts.has_next and posts.next_page_number != posts.paginator.num_pages %}
+        <li class="page-item"><a class="page-link" href="?page={{posts.next_page_number}}">{{posts.next_page_number}}</a></li>
+        <li class="mx-2 mb-0">. . .</li>
+        {% endif %}
+
+        {% if posts.has_next %}
+        <li class="page-item"><a class="page-link"  href="?page={{ posts.paginator.num_pages }}">{{ posts.paginator.num_pages }}</a></li>
+        <li class="page-item"><a class="page-link"  href="?page={{ posts.next_page_number }}">Сюда > </a></li>
+        {% endif %}
+    </ul>
+    </div>
+
+
+
+
 {% endblock %}

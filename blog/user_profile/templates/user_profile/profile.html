@@ -5,14 +5,25 @@
 {%endblock%}}
 
 {%block content%}
-        <img src="{{userprofile.avatar}}">{{userprofile.avatar}}<img>
-         <p>{{userprofile.user}}</p>
-         <p>{{userprofile.user.first_name}}</p>
-         <p>{{userprofile.user.last_name}}</p>
-         <p>{{userprofile.user.email}}</p>
-         <p>{{userprofile.bio}}</p>
-         <p> Posts: {%for post in userprofile.get_post%}
-            <p><a href="{{post.get_absolute_url}}"> {{post.title|title}}</a></p>
+            <div class="card">
+                <img src="{{userprofile.avatar}}" class="card-img-top" alt="avatar">
+                <div class="card-body">
+                <h5 class="card-title">{{userprofile.user}}</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Имя: {{userprofile.user.first_name}}</li>
+                    <li class="list-group-item">Фамилия: {{userprofile.user.last_name}}</li>
+                    <li class="list-group-item">Email: {{userprofile.user.email}}</li>
+                </ul>
+                    <div class="card-body">
+                    <h2 class="card-title">О себе:</h2>
+                    <p class="card-text">{{userprofile.bio}}</p>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">Посты {{userprofile.user}}:</h3>
+                    {%for post in userprofile.get_post%}
+                    <a class="card-link" href="{{post.get_absolute_url}}"> {{post.title|title}}</a>
                     {%endfor%}
-         </p>
+                </div>
+            </div>
 {%endblock%}

@@ -9,7 +9,7 @@
 {%block content%}
     <h1>Посты с тегом {{tag.title}}:</h1>
     {%for post in tag.posts.all%}
-       {%include 'blogengine/includes/post_card.html' %}
+      <div class="mb-2  mx-4"> <a href="{{post.get_absolute_url}}">{{post.title|title}}</a></div>
     {%endfor%}
     <div class="card-footer text-muted">
             <a class="btn btn-secondary mt-2 " href="{%url 'tags_list_url' %}" role="button">Назад</a>
