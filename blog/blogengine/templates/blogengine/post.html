@@ -13,5 +13,13 @@
                     <a class="btn btn-warning  " href="{%url 'post_update_url' slug=post.slug %}" role="button">Изменить</a>
                 {%endif%}
             </div>
-        </div>
+            <div>
+                 {%for comment in comments%}
+                    <div class="card m-1 mx-5">
+                        <div class="card-header bg-info px-2 py-1 small  ">{{comment.author.user}} - {{comment.date}}</div>
+                        <div class="card-text my-2 mx-5 small">{{comment.text}}</div>
+                    </div>
+                {%endfor%}
+                {% include 'comments/includes/comment_add_form.html'%}
+            </div>
 {%endblock%}

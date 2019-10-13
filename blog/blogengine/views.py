@@ -1,34 +1,18 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from .models import Post, Tag
+from comments.models import Comment
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
 from .forms import PostCreateForm
+from comments.views import CommentAddForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from  django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
+from .settings import PAGINATOR_PER_PAGE
 
 
 #CRUD Post
-
-# def posts_list(request):
-#     posts = Post.objects.all()
-#     # print(request)
-#     return render(request, 'blogengine/index.html', context={'posts': posts})
-
-# def post_detail(request, slug):
-#     post = Post.objects.get(slug__iexact=slug)
-#     return render(request, 'blogengine/post.html', context={'post': post})
-
-# def post_create(request):
-#     if request.method == 'GET':
-#         form = PostForm()
-#         return render(request, 'blogengine/post_create.html', context={'form': form})
-#     else:
-#         bound_form = PostForm(request.POST)
-#         if bound_form.is_valid():
-#             new_post = bound_form.save()
-#             return redirect(new_post)
 
 class PostsView(ListView):
     model = Post
@@ -37,7 +21,7 @@ class PostsView(ListView):
 
     def get_queryset(self):
         obj = self.model.objects.all()
-        paginator = Paginator(obj, 2)
+        paginator = Paginator(obj, PAGINATOR_PER_PAGE)
         page = self.request.GET.get('page')
         if page is None:
             page = 1
@@ -45,16 +29,34 @@ class PostsView(ListView):
         return posts
 
 
-
-
 class PostDetailView(DetailView):
     model = Post
     template_name = 'blogengine/post.html'
 
-    # def get_context_data(self, **kwargs):
-    #     context = super(PostDetailView, self).get_context_data(**kwargs)
-    #     context['post'] = get_object_or_404(Post, slug=self.kwargs['slug'])
-    #     return context
+    def post(self, request, slug):
+        form = CommentAddForm(request.POST)
+        post = Post.objects.get(slug__iexact=slug)
+        print(post.id)
+        print(request.user.userprofile.id)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.author = request.user.userprofile
+            comment.post = post
+            comment.save()
+            return redirect(post)
+        else:
+            raise Exception
+
+    def get_context_data(self, **kwargs):
+        context = super(PostDetailView, self).get_context_data(**kwargs)
+        context['comments'] = Comment.objects.filter(post=self.object.id)
+        context['form'] = CommentAddForm()
+        # print(self.request)
+        # print(context)
+        return context
+
+
+
 
 
 class PostCreate(LoginRequiredMixin, View):

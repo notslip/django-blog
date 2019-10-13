@@ -1,0 +1,21 @@
+<form  method="POST" pk=pk=post.id>
+    {%csrf_token%}
+    <!--{%for field in form%}-->
+        <!--<div>-->
+            <!--{%if field.is_hidden%}-->
+                <!--{% if field.errors%}-->
+                    <!--<div class="alert alert-danger">{{field.errors}}</div>-->
+                <!--{%endif%}-->
+            <!--{%else%}-->
+                <!--{{field.label}}-->
+                <!--<p>{{field}}</p>-->
+                <!--{% if field.errors%}-->
+                    <!--<div class="alert alert-danger">{{field.errors}}</div>-->
+                <!--{%endif%}-->
+            <!--{%endif%}-->
+        <!--</div>-->
+    <!--{%endfor%}-->
+
+    {{form.as_p}}
+    <button class="btn btn-success" type="submit">Оставить комментарий</button>
+</form>
