@@ -5,25 +5,41 @@
 {%endblock%}}
 
 {%block content%}
-            <div class="card">
-                <img src="{{userprofile.avatar}}" class="card-img-top" alt="avatar">
-                <div class="card-body">
-                <h5 class="card-title">{{userprofile.user}}</h5>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Имя: {{userprofile.user.first_name}}</li>
-                    <li class="list-group-item">Фамилия: {{userprofile.user.last_name}}</li>
-                    <li class="list-group-item">Email: {{userprofile.user.email}}</li>
-                </ul>
-                    <div class="card-body">
-                    <h2 class="card-title">О себе:</h2>
-                    <p class="card-text">{{userprofile.bio}}</p>
+            <div class="container">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="card">
+                            <img src="{{userprofile.avatar}}" class="card-img-top" alt="avatar">
+                            <div class="card-body">
+                                <h5 class="card-title">{{userprofile.user}}</h5>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">Имя: {{userprofile.user.first_name}}</li>
+                                    <li class="list-group-item">Фамилия: {{userprofile.user.last_name}}</li>
+                                    <li class="list-group-item">Email: {{userprofile.user.email}}</li>
+                                </ul>
+                                <div class="card-body">
+                                    <h2 class="card-title">О себе:</h2>
+                                    <p class="card-text">{{userprofile.bio}}</p>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <h3 class="card-title">Посты {{userprofile.user}}:</h3>
+                                {%for post in userprofile.get_post%}
+                                <a class="card-link" href="{{post.get_absolute_url}}"> {{post.title|title}}</a>
+                                {%endfor%}
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="card-body">
-                    <h3 class="card-title">Посты {{userprofile.user}}:</h3>
-                    {%for post in userprofile.get_post%}
-                    <a class="card-link" href="{{post.get_absolute_url}}"> {{post.title|title}}</a>
-                    {%endfor%}
+                    <div class="col-6">
+                        <h3>Комментарии оставленные {{userprofile.user}}:</h3>
+                        {%for comment in userprofile.get_comment%}
+                        <div class="card my-2 mx-5">
+                            <div class="card-header bg-info px-2 py-1 small  ">{{comment.author.user}} - {{comment.date}}
+                                к посту:<a class="text-dark" href="{{comment.post.get_absolute_url}}">{{comment.post}}</a> </div>
+                            <div class="card-text my-2 mx-5 small">{{comment.text}}</div>
+                        </div>
+                        {%endfor%}
+                    </div>
                 </div>
             </div>
 {%endblock%}

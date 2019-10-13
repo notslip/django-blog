@@ -31,5 +31,8 @@ class UserProfile(models.Model):
     def get_post(self):
         return UserProfile.objects.get(id=self.id).posts.all()
 
+    def get_comment(self):
+        return UserProfile.objects.get(id=self.id).comment.all()
+
     # def get_absolute_url(self):
     #     return reverse('profile_detail_url', kwargs={'pk': self.id})
