@@ -7,7 +7,7 @@
 {%block content%}
             <div class="container">
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-10">
                         <div class="card">
                             <img src="{{userprofile.avatar}}" class="card-img-top" alt="avatar">
                             <div class="card-body">
@@ -22,15 +22,18 @@
                                     <p class="card-text">{{userprofile.bio}}</p>
                                 </div>
                             </div>
-                            <div class="card-body">
-                                <h3 class="card-title">Посты {{userprofile.user}}:</h3>
-                                {%for post in userprofile.get_post%}
-                                <a class="card-link" href="{{post.get_absolute_url}}"> {{post.title|title}}</a>
-                                {%endfor%}
-                            </div>
+
                         </div>
                     </div>
-                    <div class="col-6">
+
+                    {%if request.user == userprofile.user%}
+                    <div class="col-2"><a href="{%url 'mess_create_url'%}">Отправить сообщение</a></div>
+                    {%else%}
+                    <div class="col-2"><a href="{%url 'mess_create_url' pk=userprofile.id%}">
+                        Отправить сообщение {{userprofile.user}}</a></div>
+                    {%endif%}
+                </div>
+                 <div class="row">  <div class="col-4">
                         <h3>Комментарии оставленные {{userprofile.user}}:</h3>
                         {%for comment in userprofile.get_comment%}
                         <div class="card my-2 mx-5">
@@ -40,6 +43,29 @@
                         </div>
                         {%endfor%}
                     </div>
-                </div>
+                    <div class="col-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 class="card-title">Посты {{userprofile.user}}:</h3>
+                                {%for post in userprofile.get_post%}
+                                <a class="card-link" href="{{post.get_absolute_url}}"> {{post.title|title}}</a>
+                                {%endfor%}
+                            </div>
+                        </div>
+                    </div>
+                     <div class="col-4">
+                         <div class="card">
+                             <h3 class="card-title">Сообщения:</h3>
+                             {%for message in userprofile.get_messages%}
+                             <div class="card my-2 mx-5">
+                                 <div class="card-header bg-info px-2 py-1 small  ">Отправитель: <a class="text-dark" href="{{message.author}}">
+                                     {{message.author.user}}</a> - {{message.date}}
+                                     получатель:<a class="text-dark" href="{{message.to}}">{{message.recipient.user}}</a> </div>
+                                 <div class="card-text my-2 mx-5 small">{{message.body}}</div>
+                             </div>
+                             {%endfor%}
+                         </div>
+                     </div>
+                 </div>
             </div>
 {%endblock%}

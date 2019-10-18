@@ -36,8 +36,6 @@ class PostDetailView(DetailView):
     def post(self, request, slug):
         form = CommentAddForm(request.POST)
         post = Post.objects.get(slug__iexact=slug)
-        print(post.id)
-        print(request.user.userprofile.id)
         if form.is_valid():
             comment = form.save(commit=False)
             comment.author = request.user.userprofile

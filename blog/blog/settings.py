@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blogengine',
     'user_profile',
-    'comments'
+    'comments',
+    'mess'
 ]
 
 MIDDLEWARE = [

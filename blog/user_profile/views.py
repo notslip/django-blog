@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.views.generic import  DetailView, UpdateView
+from django.views.generic import DetailView, UpdateView
 from .models import UserProfile
 from .forms import UserForm, ProfileForm
 from django.contrib.auth.mixins import LoginRequiredMixin

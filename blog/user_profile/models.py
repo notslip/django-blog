@@ -14,7 +14,6 @@ class UserProfile(models.Model):
                                width_field=300,
                                height_field=300,
                                blank=True)
-    # comments =
 
     @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):
@@ -34,5 +33,6 @@ class UserProfile(models.Model):
     def get_comment(self):
         return UserProfile.objects.get(id=self.id).comment.all()
 
-    # def get_absolute_url(self):
-    #     return reverse('profile_detail_url', kwargs={'pk': self.id})
+    def get_messages(self):
+        return UserProfile.objects.get(id=self.id).message_set.all()
+
