@@ -3,6 +3,7 @@ from django.shortcuts import reverse
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from mess.models import Message
 
 
 
@@ -33,6 +34,10 @@ class UserProfile(models.Model):
     def get_comment(self):
         return UserProfile.objects.get(id=self.id).comment.all()
 
-    def get_messages(self):
+    def get_messages_author(self):
         return UserProfile.objects.get(id=self.id).message_set.all()
+
+    def get_messages_to(self):
+        return Message.objects.filter(recipient_id=self.id)
+
 

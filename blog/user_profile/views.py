@@ -3,15 +3,25 @@ from django.views.generic import DetailView, UpdateView
 from .models import UserProfile
 from .forms import UserForm, ProfileForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from blog import settings
 
 
 class ProfileView(DetailView):
     def get(self, request, **kwargs):
         if 'pk' in kwargs:
             userprofile = UserProfile.objects.get(id=kwargs['pk'])
+            return render(request, template_name='user_profile/profile.html', context={'userprofile': userprofile})
+        elif not request.user.is_authenticated:
+            return redirect("{}?next={}".format(settings.LOGIN_URL, request.path))
         else:
             userprofile = request.user.userprofile
-        return render(request, template_name='user_profile/profile.html', context={'userprofile': userprofile})
+            messages_out = userprofile.get_messages_author()
+            messages_to = userprofile.get_messages_to()
+            return render(request, template_name='user_profile/profile.html', context={'userprofile': userprofile,
+                                                                                       'messages_out': messages_out,
+                                                                                       'messages_to': messages_to})
+
+
 
 
 class ProfileUpdate(LoginRequiredMixin, UpdateView):

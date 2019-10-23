@@ -5,67 +5,103 @@
 {%endblock%}}
 
 {%block content%}
-            <div class="container">
-                <div class="row">
-                    <div class="col-10">
-                        <div class="card">
-                            <img src="{{userprofile.avatar}}" class="card-img-top" alt="avatar">
-                            <div class="card-body">
-                                <h5 class="card-title">{{userprofile.user}}</h5>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">Имя: {{userprofile.user.first_name}}</li>
-                                    <li class="list-group-item">Фамилия: {{userprofile.user.last_name}}</li>
-                                    <li class="list-group-item">Email: {{userprofile.user.email}}</li>
-                                </ul>
-                                <div class="card-body">
-                                    <h2 class="card-title">О себе:</h2>
-                                    <p class="card-text">{{userprofile.bio}}</p>
-                                </div>
-                            </div>
-
-                        </div>
+<div class="container">
+    <div class="row">
+        <div class="col-9">
+            <div class="card">
+                <img src="{{userprofile.avatar}}" class="card-img-top" alt="avatar">
+                <div class="card-body">
+                    <h5 class="card-title">{{userprofile.user}}</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Имя: {{userprofile.user.first_name}}</li>
+                        <li class="list-group-item">Фамилия: {{userprofile.user.last_name}}</li>
+                        <li class="list-group-item">Email: {{userprofile.user.email}}</li>
+                    </ul>
+                    <div class="card-body">
+                        <h2 class="card-title">О себе:</h2>
+                        <p class="card-text">{{userprofile.bio}}</p>
                     </div>
-
-                    {%if request.user == userprofile.user%}
-                    <div class="col-2"><a href="{%url 'mess_create_url'%}">Отправить сообщение</a></div>
-                    {%else%}
-                    <div class="col-2"><a href="{%url 'mess_create_url' pk=userprofile.id%}">
-                        Отправить сообщение {{userprofile.user}}</a></div>
-                    {%endif%}
                 </div>
-                 <div class="row">  <div class="col-4">
-                        <h3>Комментарии оставленные {{userprofile.user}}:</h3>
-                        {%for comment in userprofile.get_comment%}
-                        <div class="card my-2 mx-5">
-                            <div class="card-header bg-info px-2 py-1 small  ">{{comment.author.user}} - {{comment.date}}
-                                к посту:<a class="text-dark" href="{{comment.post.get_absolute_url}}">{{comment.post}}</a> </div>
-                            <div class="card-text my-2 mx-5 small">{{comment.text}}</div>
-                        </div>
-                        {%endfor%}
-                    </div>
-                    <div class="col-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <h3 class="card-title">Посты {{userprofile.user}}:</h3>
-                                {%for post in userprofile.get_post%}
-                                <a class="card-link" href="{{post.get_absolute_url}}"> {{post.title|title}}</a>
-                                {%endfor%}
-                            </div>
-                        </div>
-                    </div>
-                     <div class="col-4">
-                         <div class="card">
-                             <h3 class="card-title">Сообщения:</h3>
-                             {%for message in userprofile.get_messages%}
-                             <div class="card my-2 mx-5">
-                                 <div class="card-header bg-info px-2 py-1 small  ">Отправитель: <a class="text-dark" href="{{message.author}}">
-                                     {{message.author.user}}</a> - {{message.date}}
-                                     получатель:<a class="text-dark" href="{{message.to}}">{{message.recipient.user}}</a> </div>
-                                 <div class="card-text my-2 mx-5 small">{{message.body}}</div>
-                             </div>
-                             {%endfor%}
-                         </div>
-                     </div>
-                 </div>
+
             </div>
+        </div>
+
+        {%if request.user == userprofile.user%}
+        <div class="col-3"><a class="btn btn-success" href="{%url 'mess_create_url'%}">Отправить сообщение</a></div>
+        {%else%}
+        <div class="col-3"><a class="btn btn-success" href="{%url 'mess_create_url' pk=userprofile.id%}">
+            Отправить сообщение {{userprofile.user}}</a></div>
+        {%endif%}
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <button class="btn btn-primary my-4 w-100" type="button" data-toggle="collapse" data-target="#commenttoogle" aria-expanded="false" aria-controls="commenttoogle">
+                <h5>Комментарии</h5>
+            </button>
+            <div class="collapse" id="commenttoogle">
+                {%for comment in userprofile.get_comment%}
+                <div class="card my-2 mx-5">
+                    <div class="card-header bg-info px-2 py-1 small  ">{{comment.author.user}} - {{comment.date}}
+                        к посту:<a class="text-dark" href="{{comment.post.get_absolute_url}}">{{comment.post}}</a> </div>
+                    <div class="card-text my-2 mx-5 small">{{comment.text}}</div>
+                </div>
+                {%endfor%}
+            </div>
+        </div>
+        <div class="col-4">
+            <button class="btn btn-primary my-4 w-100" type="button" data-toggle="collapse" data-target="#posttoogle" aria-expanded="false" aria-controls="posttoogle">
+                <h5>Посты</h5>
+            </button>
+            <div class="collapse" id="posttoogle">
+                {%for post in userprofile.get_post%}
+                <div class="card">
+                    <div class="card-body">
+                        <a class="card-link" href="{{post.get_absolute_url}}"> {{post.title|title}}</a>
+                    </div>
+                </div>
+                {%endfor%}
+            </div>
+        </div>
+        <div class="col-4">
+            {%if messages_out%}
+            <button class="btn btn-primary my-4 w-100" type="button" data-toggle="collapse" data-target="#messagetoogle" aria-expanded="false" aria-controls="messagetoogle">
+                <h5>Исходящие Сообщения</h5>
+            </button>
+            <div class="collapse" id="messagetoogle">
+                {%for message in messages_out%}
+                <div class="card my-2 mx-5">
+                    <div class="card-header bg-info px-2 py-1 small ">
+                            Отправитель: <a class="text-dark" href="{{message.get_author}}">
+                            {{message.author.user}}</a> - {{message.date}}
+                            получатель:<a class="text-dark" href="{{message.get_to}}">{{message.recipient.user}}</a>
+                    </div>
+                    <div class="card-text my-2 mx-5 small">
+                        {{message.body}}
+                    </div>
+                </div>
+                {%endfor%}
+            </div>
+            {%endif%}
+            {%if messages_to%}
+                <button class="btn btn-primary my-4 w-100" type="button" data-toggle="collapse" data-target="#messagetoogle2" aria-expanded="false" aria-controls="messagetoogle2">
+                    <h5>Входящие Сообщения</h5>
+                </button>
+                <div class="collapse" id="messagetoogle2">
+                    {%for message in messages_to%}
+                    <div class="card my-2 mx-5">
+                            <div class="card-header bg-success px-2 py-1 small ">
+                                Отправитель: <a class="text-dark" href="{{message.get_author}}">
+                                {{message.author.user}}</a> - {{message.date}}
+                                получатель:<a class="text-dark" href="{{message.get_to}}">{{message.recipient.user}}</a>
+                            </div>
+                            <div class="card-text my-2 mx-5 small">
+                                {{message.body}}
+                            </div>
+                    </div>
+                    {%endfor%}
+                </div>
+            {%endif%}
+        </div>
+    </div>
+</div>
 {%endblock%}

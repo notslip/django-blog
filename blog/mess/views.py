@@ -1,13 +1,12 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse_lazy, reverse
 from user_profile.models import UserProfile
 from .forms import MessageCreateForm1, MessageCreateForm2
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
-
-class MessageCreate(View):
+from django.views.generic import  View
 
 
+class MessageCreate(LoginRequiredMixin, View):
     def get(self, request, **kwargs):
         if 'pk' in kwargs:
             pk=kwargs['pk']
@@ -18,11 +17,11 @@ class MessageCreate(View):
             return render(request, template_name='mess/mess_create.html', context={'form': form})
 
     def post(self, request, **kwargs):
+        print(kwargs)
         if 'pk' in kwargs:
             form = MessageCreateForm1(request.POST)
             pk = kwargs['pk']
             to = get_object_or_404(UserProfile, id=pk)
-            print(to.__dict__)
             if form.is_valid():
                 mess=form.save(commit=False)
                 mess.author=request.user.userprofile
@@ -34,8 +33,8 @@ class MessageCreate(View):
         else:
             form = MessageCreateForm2(request.POST)
             if form.is_valid():
-                form.save(commit=False)
-                form.author=request.user.userprofile
-                form.save()
+                mess=form.save(commit=False)
+                mess.author = request.user.userprofile
+                mess.save()
                 return redirect('profile_detail_url')
 
