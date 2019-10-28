@@ -28,11 +28,12 @@ class ProfileUpdate(LoginRequiredMixin, UpdateView):
 
     def post(self, request):
         user_form = UserForm(request.POST, instance=request.user)
-        profile_form = ProfileForm(request.POST, instance=request.user.userprofile)
+        profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.userprofile)
 
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
+            print(profile_form)
             return redirect('profile_detail_url')
         else:
             return render(request, template_name='user_profile/profile_update.html', context={

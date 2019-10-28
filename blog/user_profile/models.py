@@ -10,10 +10,8 @@ from mess.models import Message
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio= models.TextField(max_length=400, blank=True, db_index=True)
-    avatar = models.ImageField(upload_to='avatar/{}'.format(user),
-                               verbose_name="Avatar",
-                               width_field=300,
-                               height_field=300,
+    avatar = models.ImageField(upload_to='avatar/',
+                               null=True,
                                blank=True)
 
     @receiver(post_save, sender=User)

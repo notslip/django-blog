@@ -9,7 +9,9 @@
     <div class="row">
         <div class="col-9">
             <div class="card">
-                <img src="{{userprofile.avatar}}" class="card-img-top" alt="avatar">
+                {%if userprofile.avatar%}
+                <img src="{{userprofile.avatar.url}}" class="card-img-top" alt="{{userprofile.user}}">
+                {%endif%}
                 <div class="card-body">
                     <h5 class="card-title">{{userprofile.user}}</h5>
                     <ul class="list-group list-group-flush">

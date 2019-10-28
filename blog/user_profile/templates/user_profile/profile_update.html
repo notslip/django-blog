@@ -6,7 +6,7 @@
 
 
 {%block content%}
-<form action="{%url 'profile_update_url' %}" method="post">
+<form action="{%url 'profile_update_url' %}" method="post" enctype="multipart/form-data">
     {%csrf_token%}
 
     {{ user_form.as_p }}
