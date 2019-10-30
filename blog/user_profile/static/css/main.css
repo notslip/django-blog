@@ -1,0 +1,14 @@
+
+.avatar
+{
+    border-radius: 60%;
+    height: 200px;
+    width: 200px;
+    margin: 10px;
+}
+
+.avatar:hover{
+     border-radius: 0%;
+     transform: scale(2);
+     z-index: 9999;
+}
