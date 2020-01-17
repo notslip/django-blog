@@ -1,5 +1,7 @@
 from django import forms
 from .models import Post
+from ckeditor_uploader.widgets import CKEditorUploadingWidget
+
 
 
 # class PostForm(forms.ModelForm):
@@ -18,10 +20,13 @@ from .models import Post
 
 
 class PostCreateForm(forms.ModelForm):
+    body = forms.CharField(widget=CKEditorUploadingWidget())
 
-      class Meta:
-          model = Post
-          fields = ['title', 'slug', 'body', 'tags', 'author']
-          widgets = {
-              'author': forms.HiddenInput()
-          }
+    class Meta:
+        model = Post
+        fields = ['title', 'slug', 'body', 'tags', 'author']
+
+        widgets = {
+            # 'body': forms.Textarea(attrs={'id':'editor'}),
+            'author': forms.HiddenInput()
+        }

@@ -64,7 +64,7 @@ class PostCreate(LoginRequiredMixin, View):
         return render(request, template_name='blogengine/post_create.html', context={'form': form})
 
     def post(self, request):
-        form = PostCreateForm(request.POST)
+        form = PostCreateForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user.userprofile
@@ -76,7 +76,8 @@ class PostCreate(LoginRequiredMixin, View):
 
 class PostUpdate(LoginRequiredMixin, UpdateView):
     model = Post
-    fields = ['title', 'slug', 'body', 'tags']
+    # fields = ['title', 'slug', 'body', 'tags']
+    form_class = PostCreateForm
     template_name = 'blogengine/post_update.html'
     context_object_name = 'post'
 

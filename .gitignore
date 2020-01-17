@@ -1,4 +1,4 @@
 .idea/
 venv/
 *.pyc
-blog/media/avatar/
+blog/media/

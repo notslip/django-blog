@@ -26,10 +26,11 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('registration/', CreateUser.as_view(), name='registration'),
     path('', include('blogengine.urls')),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
     path('blog/', include('blogengine.urls')),
     path('profile/', include('user_profile.urls')),
     ]
 
 
-
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -5,10 +5,10 @@
         <div class="card-body">
             <h5 class="card-title">{{post.title}}</h5>
             {%if posts%}
-                <p class="card-text">{{post.body|truncatechars:10}}</p>
+                <p class="card-text">{{post.body|safe|truncatewords_html:40}}</p>
                 <a href="{{post.get_absolute_url}} " class="btn btn-secondary">Читать</a>
             {%else%}
-                <p class="card-text">{{post.body}}</p>
+                <div class="card-text">{{post.body|safe}}</div>
                 <a href="{% url 'profile_detail_url' pk=post.author_id %}">{{post.author.user}}</a>
             {%endif%}
         </div>

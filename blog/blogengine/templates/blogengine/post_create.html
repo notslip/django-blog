@@ -6,7 +6,8 @@
 
 
 {%block content%}
-<form action="{%url 'post_create_url'%}" method="post">
+
+<form action="{%url 'post_create_url'%}" method="post" enctype="multipart/form-data">
     {%csrf_token%}
 
     {%for field in form%}
@@ -25,9 +26,11 @@
         </div>
     {%endfor%}
 
+
     <button class="btn btn-success" type="submit">Создать</button>
     <a class="btn btn-secondary" href="{% url 'posts_list_url'%}" type="button">Отменить</a>
 
 </form>
+
 
 {%endblock%}
