@@ -16,7 +16,7 @@
 <body>
     {% block header %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">Navbar</a>
+        <a class="navbar-brand" href=" {% url 'posts_list_url' %}">Blojig</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -31,7 +31,7 @@
                 {%if request.user.is_authenticated %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Создать:
+                        Создать
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="{%url 'post_create_url'%}">Пост</a>
@@ -48,16 +48,16 @@
             <div class="mx-4 "><a class="text-white" href="{%url 'registration' %}">Зарегистрироваться</a></div>
             <div class="mx-4 "><a class="text-white" href="{%url 'login' %}">Войти</a></div>
         {%endif%}
-        <form class="form-inline">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        <form class="form-inline" action="{%url 'search_url'%}">
+            <input class="form-control mr-sm-2" type="search" placeholder="Поиск" aria-label="Search" name="search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Тыц!</button>
         </form>
     </nav>
     {%endblock%}
 
     <div class="container mt-5 ">
-        <div class="row">
-            <div class="col">
+        <div class="row justify-content-center">
+            <div class="col-12">
                 {%block content%}
                 Content
                 {%endblock%}

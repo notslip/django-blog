@@ -1,0 +1,46 @@
+{% extends "main_base.html" %}
+
+{%block title%}
+   Поиск для: {{search_query}}
+{%endblock%}
+
+{% block content %}
+<div class="container">
+  <div class="row justify-content-around">
+    <div class="col-4">
+        <div class="card-header">
+            <h3>Посты:</h3>
+        </div>
+        {%for post in posts%}
+        <div class="card m-2">
+            <div class="card-header"><a href="{{post.get_absolute_url}} " >{{post.title}}</a></div>
+            <div class="card-body"><p>{{post.body|safe|truncatewords_html:40}}</p></div>
+        </div>
+        {%endfor%}
+    </div>
+    <div class="col-4">
+        <div class="card">
+        <div class="card-header">
+            <h3>Категории:</h3>
+        </div>
+        <ul class="list-group list-group-flush">
+        {%for tag in tags%}
+            <li class="list-group-item"><a href="{{tag.get_absolute_url}}">{{tag.title}}</a></li>
+        {%endfor%}
+        </ul>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="card-header">
+            <h3>Комментарии:</h3>
+        </div>
+        {%for comment in comments%}
+        <div class="card m-2">
+            <div class="card-header"><a href="{{comment.post.get_absolute_url}}">{{comment.post}}</a></div>
+            <div class="card-body"><p><p>{{comment.text}}</p></p></div>
+        </div>
+        {%endfor%}
+    </div>
+  </div>
+</div>
+{% endblock %}

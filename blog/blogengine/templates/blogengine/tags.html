@@ -5,9 +5,9 @@
 {%endblock%}
 
 {%block content%}
-    <div class="mb-5"><h1>Теги</h1></div>
+    <div class="mb-5 "><h1>Теги</h1></div>
         {%for tag in tags%}
-            <div class="card mb-4">
+            <div class="card mb-4 mx-5">
 
                     <h5 class="card-title m-2"><a href="{{tag.get_absolute_url}}"> {{tag.title}}</a></h5>
                     <div class="card-footer text-muted">

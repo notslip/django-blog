@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
-from .views import CreateUser
+from .views import CreateUser, search_list
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -29,6 +29,7 @@ urlpatterns = [
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('blog/', include('blogengine.urls')),
     path('profile/', include('user_profile.urls')),
+    path('search/', search_list, name='search_url')
     ]
 
 

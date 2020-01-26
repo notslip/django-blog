@@ -20,7 +20,7 @@ class PostsView(ListView):
     context_object_name = 'posts'
 
     def get_queryset(self):
-        obj = self.model.objects.all()
+        obj = self.model.objects.all().order_by('id')
         paginator = Paginator(obj, PAGINATOR_PER_PAGE)
         page = self.request.GET.get('page')
         if page is None:
@@ -72,6 +72,12 @@ class PostCreate(LoginRequiredMixin, View):
             return redirect(post)
         else:
             return render(request, 'blogengine/post_create.html', context={'form': form})
+
+
+# class PostCreate(LoginRequiredMixin, CreateView):
+#     model = Post
+#     form_class = PostCreateForm
+#     template_name = 'blogengine/post_create.html'
 
 
 class PostUpdate(LoginRequiredMixin, UpdateView):

@@ -6,9 +6,15 @@
 
 {%block content%}
     <div class="mb-4"><h1>Посты</h1></div>
-    {%for post in posts%}
-        {%include 'blogengine/includes/post_card.html' %}
-    {% endfor %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-8">
+            {%for post in posts%}
+                {%include 'blogengine/includes/post_card.html' %}
+            {% endfor %}
+            </div>
+        </div>
+    </div>
 
     <div>
     <ul class="pagination">
