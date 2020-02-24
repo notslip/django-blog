@@ -6,6 +6,16 @@
 
 
 {%block content%}
+{% if messages %}
+    <ul >
+        {% for message in messages %}
+            <li class="{{ message.tags }}">
+                {{ message|safe }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
 <form action="{%url 'registration' %}" method="post">
     {%csrf_token%}
 

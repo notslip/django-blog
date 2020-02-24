@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
-from .views import CreateUser, search_list
+from .views import CreateUser, search_list, activated_user
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -25,6 +25,7 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('registration/', CreateUser.as_view(), name='registration'),
+    path('activated/<str:hash>',activated_user, name='activated' ),
     path('', include('blogengine.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('blog/', include('blogengine.urls')),
